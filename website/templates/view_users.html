@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/form.css') }}">
+
+{% endblock %}
+
+{% block title %}All users{% endblock %}
+
+{% block content %}
+<div>
+    <h1>All users</h1>
+    {% if isEmpty %}
+    <div style="text-align:center">No user was added</div>
+    {% else %}
+    <table>
+        <tr>
+            <th>Email id</th>
+            <th>Name</th>
+            <th>Usertype</th>
+            <th>Roll number</th>
+        </tr>
+        {% for user in users %}
+        {% if user.usertype!='admin' %}
+        <tr>
+            <td>{{ user.email }}</td>
+            <td>{{ user.first_name }}</td>
+            <td>{{ user.usertype}}</td>
+            <td>{{user.roll_number}}</td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+    </table>
+    {% endif %}
+</div>
+{% endblock %}

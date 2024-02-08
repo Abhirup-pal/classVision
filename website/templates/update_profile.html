@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/form.css') }}">
+
+{% endblock %}
+
+{% block title %}Update profile{% endblock %}
+
+{% block content %}
+<h1>Update profile</h1>
+
+<form method="POST" action="/update_profile" enctype="multipart/form-data">
+    <label for="Email">Email id:</label>
+    <input type="email" id="email" name="email" class="form-control" required value={{user.email}}>
+    <label for="Name">Name : </label>
+    <input type="text" id="name" name="first_name" required value={{user.first_name}}>
+
+
+    <!-- for students only -->
+    {% if current_user.usertype=="student" %}
+    <label for="Roll number">Roll number : </label>
+    <input type="text" id="roll_number" name="roll_number" value={{user.roll_number}} readonly>
+    <label for="zip_file">Zip File:</label>
+    <input type="file" id="zip_file" name="zip_file" accept=".zip"><br><br>
+    <label for="alert">File name should be "Roll_num.zip" </label>
+    {% endif %}
+    <input type="Submit" value="Update">
+</form>
+
+{% endblock %}

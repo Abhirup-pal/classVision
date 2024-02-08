@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/form.css') }}">
+
+{% endblock %}
+
+{% block title %}Class registration{% endblock %}
+
+{% block content %}
+
+
+<table>
+    <tr>
+        <th>Class Name</th>
+        <th>Action</th>
+    </tr>
+    {% for class in Class_data %}
+    <tr>
+        <td>{{class['class_name']}}</td>
+        <td>
+            {% if class['registration_state'] %}
+            <a href="/registration/{{class['id']}}">Deregister</a>
+            {% else %}
+            <a href="/registration/{{class['id']}}">Register</a>
+            {% endif %}
+        </td>
+        <td></td>
+    </tr>
+    {% endfor %}
+
+</table>
+
+
+{% endblock %}

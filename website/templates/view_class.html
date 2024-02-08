@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/form.css') }}">
+
+{% endblock %}
+
+{% block title %}View classes{% endblock %}
+
+{% block content %}
+<div>
+  <h1>Create a New Class </h1>
+  <form method="POST" action="/view_class">
+    <label for="class_name">Class Name:</label>
+    <input type="text" id="class_name" name="class_name" required>
+    <input type="submit" value="Create">
+  </form>
+  <h1>View Classes</h1>
+
+  <div style="text-align:center">
+  {% if class_data|length==0 %}
+    <div>No classes found.</div>
+  {% else %}
+    {% for cls in class_data %}
+      <h2>Class name : {{cls['class_name']}}</h2>
+      <a href="/deleteClass/{{cls['class_name']}}">Delete class</a>
+      {% if cls['students_list']|length==0 %}
+        <div>No student was added to this class</div>
+      {% else %}
+      <ul>
+        {% for stud in cls['students_list'] %}
+        <li style="list-style-type:None;">{{stud}}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+
+    {% endfor %}
+  {% endif %}
+</div>
+{% endblock %}

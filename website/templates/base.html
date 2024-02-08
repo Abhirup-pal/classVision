@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static',filename='css/hamburger.css')}}">
+  {% block head %}{% endblock %}
+  <title>{% block title %}Home{% endblock %}</title>
+</head>
+
+<body>
+  <header>
+    <div class="logo">
+      <a href="/">
+        <img src="{{ url_for('static', filename='images/white_logo.png') }}" alt="logo">
+      </a>
+      <a href="/">
+        <span class="logo-text">ClassVision</span>
+      </a>
+    </div>
+    <div class="nav-links">
+      <nav>
+        <ul>
+          {% if user.is_authenticated %}
+          <!-- Common links for all authenticated users -->
+          <li><a class="nav-item nav-link" href="/update_profile">Update profile</a></li>
+          <li><a class="nav-item nav-link" href="/update_password">Update password</a></li>
+
+          <!-- links for students only -->
+          {% if user.usertype == 'student' %}
+          <li><a class="nav-item nav-link" href="/register">Class registration</a></li>
+
+
+          <!-- Additional links for faculty -->
+          {% elif user.usertype == 'faculty' %}
+
+          <li><a class="nav-item nav-link" href="/attendance">Attendance</a></li>
+          <li><a class="nav-item nav-link" href="/view_class">View Classes</a></li>
+          <li><a class="nav-item nav-link" href="/student_list">Edit students list</a></li>
+
+          <!-- Links for admin -->
+          {% elif user.usertype == 'admin' %}
+          <li><a class="nav-item nav-link" href="/faculty_list">Edit faculty list</a></li>
+          <li><a class="nav-item nav-link" href="/all_users">View all users</a></li>
+
+          {% endif %}
+
+          <li><a class="nav-item nav-link" href="/logout">Logout</a></li>
+          {% else %}
+          <!-- Links for not logged in users -->
+          <li><a class="nav-item nav-link" href="/authority_login">Authority Login</a></li>
+          <li><a class="nav-item nav-link" href="/student_login">Student Login</a></li>
+          <!-- <li><a class="nav-item nav-link" href="/sign-up">Sign Up</a></li> -->
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
+    <div class="hamburger-menu-div">
+      <label class="hamburger-menu">
+        <input type="checkbox" id="hamburger-menu-input" />
+      </label>
+      <aside class="sidebar">
+        <nav>
+          <ul>
+            {% if user.is_authenticated %}
+            <!-- Common links for all authenticated users -->
+            <li><a class="nav-item nav-link" href="/update_profile">Update profile</a></li>
+            <li><a class="nav-item nav-link" href="/update_password">Update password</a></li>
+
+            <!-- links for students only -->
+            {% if user.usertype == 'student' %}
+            <li><a class="nav-item nav-link" href="/register">Class registration</a></li>
+
+
+            <!-- Additional links for faculty -->
+            {% elif user.usertype == 'faculty' %}
+
+            <li><a class="nav-item nav-link" href="/attendance">Attendance</a></li>
+            <li><a class="nav-item nav-link" href="/view_class">View Classes</a></li>
+            <li><a class="nav-item nav-link" href="/student_list">Edit students list</a></li>
+
+            <!-- Links for admin -->
+            {% elif user.usertype == 'admin' %}
+            <li><a class="nav-item nav-link" href="/faculty_list">Edit faculty list</a></li>
+            <li><a class="nav-item nav-link" href="/all_users">View all users</a></li>
+
+            {% endif %}
+
+            <li><a class="nav-item nav-link" href="/logout">Logout</a></li>
+            {% else %}
+            <!-- Links for not logged in users -->
+            <li><a class="nav-item nav-link" href="/authority_login">Authority Login</a></li>
+            <li><a class="nav-item nav-link" href="/student_login">Student Login</a></li>
+            <!-- <li><a class="nav-item nav-link" href="/sign-up">Sign Up</a></li> -->
+            {% endif %}
+          </ul>
+        </nav>
+      </aside>
+    </div>
+  </header>
+
+
+  {% with messages = get_flashed_messages(with_categories=true) %} {% if
+  messages %} {% for category, message in messages %} {% if category ==
+  'error' %}
+  <div class="alert alert-danger alter-dismissable fade show flashmsg" role="alert">
+    {{ message }}
+    <button type="button" class="close msgbtnstyle" data-dismiss="alert">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  {% else %}
+  <div class="alert alert-success alter-dismissable fade show flashmsg" role="alert">
+    {{ message }}
+    <button type="button" class="close msgbtnstyle" data-dismiss="alert">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  {% endif %} {% endfor %} {% endif %} {% endwith %}
+
+  <div class="container">{% block content %} {% endblock %}</div>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+  <script src="./static/index.js">
+    
+  </script>
+</body>
+
+</html>

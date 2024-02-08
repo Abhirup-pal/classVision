@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/form.css') }}">
+
+{% endblock %}
+
+{% block title %}Students list{% endblock %}
+
+{% block content %}
+<div>
+    <h1>Students list </h1>
+    {% if isEmpty %}
+    <div style="text-align:center">No student was added</div>
+    {% else %}
+    <table>
+        <tr>
+            <!-- <th>Email id</th> -->
+            <th>Roll no</th>
+            <th>Name</th>
+            <th>Actions</th>
+        </tr>
+        {% for student in student_list %}
+        <tr>
+            <!-- <td>{{ student.email }}</td> -->
+            <td>{{ student.roll_number}}</td>
+            <td>{{ student.first_name }}</td>
+            <td>
+                <a href="/deleteStudent/{{student.id}}">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+    <form method="POST" action="/student_list">
+        <label for="Email">Enter the email id of the student</label>
+        <input type="email" id="email" name="email" class="form-control" required>
+        <label for="Roll number">Enter the roll number of the student</label>
+        <input type="text" id="roll_number" name="roll_number" class="form-control" required>
+        <input type="submit" value="Add">
+    </form>
+</div>
+{% endblock %}
