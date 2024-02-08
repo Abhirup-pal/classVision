@@ -1,3 +1,7 @@
+Admin : 
+Email : classvisionAdmin@gmail.com
+Password : classVision@Admin
+
 Email-id : abhiruppal28@kgpian.iitkgp.ac.in
 Password : </GYn.Z1mFDb
 Usertype : Student
