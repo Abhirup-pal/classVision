@@ -11,8 +11,8 @@ def send_email(reciever,password) :
 
 
     ##### MUST BE CHANGED before deploy
-    email_sender = 'abhiruppal2804@gmail.com'
-    email_password = "wmgiemnsoyizlspw"
+    email_sender = ''
+    email_password = ""
     #####
 
     email_receiver = reciever
