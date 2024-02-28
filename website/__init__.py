@@ -16,9 +16,15 @@ def create_app():
 
     from .views import views
     from .auth import auth
+    from .facultyRoutes import facultyRoutes
+    from .studentRoutes import studentRoutes
+    from .adminRoutes import adminRoutes
 
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
+    app.register_blueprint(facultyRoutes, url_prefix='/')
+    app.register_blueprint(studentRoutes, url_prefix='/')
+    app.register_blueprint(adminRoutes, url_prefix='/')
 
     from .models import User, Database
     

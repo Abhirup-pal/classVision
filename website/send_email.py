@@ -2,27 +2,25 @@ import os
 import smtplib
 import ssl
 from email.message import EmailMessage
+from dotenv import load_dotenv
 
 
-def send_email(reciever,password) :
 
+def send_email(email_receiver,password) :
+
+
+    load_dotenv()
     # Define email sender and receiver
-    
+    email_sender = os.getenv("EMAIL_SENDER")
+    email_password = os.getenv("EMAIL_PASSWORD")
 
-
-    ##### MUST BE CHANGED before deploy
-    email_sender = ''
-    email_password = ""
-    #####
-
-    email_receiver = reciever
 
     # Set the subject and body of the email
     subject = 'Login to the ClassVision portal'
     body = f"""
     Hello,
     You can now login to the classVision portal using the following credentials :
-    Email id : {reciever}
+    Email id : {email_receiver}
     Password : {password}
     """
 
@@ -31,6 +29,8 @@ def send_email(reciever,password) :
     em['To'] = email_receiver
     em['Subject'] = subject
     em.set_content(body)
+
+    print(email_sender,email_password)
 
     # Add SSL (layer of security)
     context = ssl.create_default_context()
