@@ -9,3 +9,7 @@ Usertype : Student
 Email-id : otojenekikorbi@gmail.com
 Password : 74P/$fbi>>t)
 Usertype : Student
+
+Email-id : 123@123
+Password : 12345678
+Usertype : Faculty

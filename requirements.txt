@@ -7,3 +7,5 @@ flask_sqlalchemy==3.0.3
 SQLAlchemy==2.0.7
 Werkzeug==2.2.3
 moviepy
+smtplib
+ssl

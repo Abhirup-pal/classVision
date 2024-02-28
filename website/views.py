@@ -11,6 +11,7 @@ import time
 from website.utils import get_attendance,clean_duplicate_attendance
 from .password import password_generator
 from werkzeug.security import generate_password_hash,check_password_hash
+from .send_email import send_email
 
 views = Blueprint('views', __name__)
 
@@ -175,6 +176,11 @@ def deleteClass(class_name) :
             return redirect('/')
         db.session.delete(class_to_delete)
         db.session.commit()
+        
+        #delete folder of the class
+        if os.isdir(os.path.join(database_path,class_name)) :
+            shutil.rmtree(os.path.join(students_database_path,class_name))
+            
         flash('Class deleted successfully')
     except :
         flash('There was an issue performing this task')
@@ -255,19 +261,21 @@ def student_list():
         elif y : 
             flash('Roll number is already added to the database')
         else :
-            temp=password_generator()
+            temp_password=password_generator()
             
             #### Must be removed in the final version
             filetowrite=open("temp.txt","a")
-            filetowrite.write(f"Email-id : {email}\nPassword : {temp}\nUsertype : Student\n\n")
+            filetowrite.write(f"Email-id : {email}\nPassword : {temp_password}\nUsertype : Student\n\n")
             filetowrite.close
 
 
-            student = User(email=email,roll_number=roll_number,password=generate_password_hash(temp),first_name="",usertype="student")
+            student = User(email=email,roll_number=roll_number,password=generate_password_hash(temp_password),first_name="",usertype="student")
             db.session.add(student)
             db.session.commit()
             flash('Student added successfully')
             ### send email to student with their password
+            send_email(email,temp_password)
+
     student_list=User.query.filter_by(usertype='student')
     cnt=0
     for stud in student_list :
@@ -385,18 +393,19 @@ def faculty_list():
         if x :
             flash('Email id is already added to the database')
         else :
-            temp=password_generator()
+            temp_password=password_generator()
             #### Must be removed in the final version
             filetowrite=open('temp.txt','a')
-            filetowrite.write(f"Email-id : {email}\nPassword : {temp}\nUsertype : Faculty\n\n")
+            filetowrite.write(f"Email-id : {email}\nPassword : {temp_password}\nUsertype : Faculty\n\n")
 
 
 
-            faculty = User(email=email,password=generate_password_hash(temp),first_name="",usertype="faculty")
+            faculty = User(email=email,password=generate_password_hash(temp_password),first_name="",usertype="faculty")
             db.session.add(faculty)
             db.session.commit()
             flash('Faculty added successfully')
             ### send email to student with their password
+            send_email(email,temp_password)
     faculty_list=User.query.filter_by(usertype='faculty')
     cnt=0
     for stud in faculty_list :

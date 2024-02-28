@@ -1,0 +1,33 @@
+
+.list-div{
+    text-align:center;
+}
+
+.same-line{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.same-line h2{
+    margin-right:1rem;
+}
+
+.same-line a{
+    margin-top:1.5rem;
+}
+
+.class-div{
+    border:2px solid ;
+    width: fit-content;
+    padding:1rem;
+    margin:auto;
+}
+
+.class-list-table li{
+    list-style-type: none;
+}
+
+table,th,td,tr{
+    border: 1px solid;
+}
