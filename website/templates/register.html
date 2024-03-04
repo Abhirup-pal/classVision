@@ -2,6 +2,7 @@
 
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/form.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/list.css') }}">
 
 {% endblock %}
 
@@ -25,7 +26,6 @@
             <a href="/registration/{{class['id']}}">Register</a>
             {% endif %}
         </td>
-        <td></td>
     </tr>
     {% endfor %}
 

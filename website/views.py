@@ -12,10 +12,11 @@ views = Blueprint('views', __name__)
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 database_path = Path(current_dir) / Path("database") / Path("classes")
+students_database_path = Path(current_dir) / Path("database") / Path("students")
+
 buffer_path = Path(current_dir) / Path("buffer")
 csv_path = Path(buffer_path) / Path("attendance.csv")
 
-students_database_path = Path(current_dir) / Path("database") / Path("students")
 
 
 
@@ -31,11 +32,18 @@ def update_profile() :
     if request.method=='POST' :
         email=request.form['email']
         first_name=request.form['first_name']
-
+        if len(email)<4 :
+            flash('Please enter a valid email id')
+            return redirect('/update_profile')
+        if len(first_name) < 2 :
+            flash('There must be more than 1 character in your name')
+            return redirect('/update_profile')
         try :    
             user_to_update=User.query.get_or_404(current_user.id)
             user_to_update.email=email
             user_to_update.first_name=first_name
+
+            #Checking for zipfile only for students
             if current_user.usertype=='student' :
                 # get the name of the zip file
                 

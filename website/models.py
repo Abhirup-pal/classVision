@@ -1,6 +1,5 @@
 from . import db
 from flask_login import UserMixin
-from sqlalchemy.sql import func
 
 MAX_STUDENTS_IN_CLASS=100
 

@@ -8,7 +8,7 @@ from pathlib import Path
 import time
 from website.utils import get_attendance,clean_duplicate_attendance
 from .password import password_generator
-from werkzeug.security import generate_password_hash,check_password_hash
+from werkzeug.security import generate_password_hash
 from .send_email import send_email
 
 facultyRoutes = Blueprint('facultyRoutes', __name__)
@@ -85,6 +85,9 @@ def view_class():
 @facultyRoutes.route('/deleteClass/<string:class_name>')
 @login_required
 def deleteClass(class_name) :
+    if current_user.usertype!='faculty' :
+        flash("You are not allowed to access this route")
+        return redirect('/')
     try :
         class_to_delete=Database.query.filter_by(class_name=class_name).first()
         if class_to_delete.user_id!=current_user.id :
@@ -92,7 +95,7 @@ def deleteClass(class_name) :
             return redirect('/')
         db.session.delete(class_to_delete)
         db.session.commit()
-        
+
         #delete folder of the class
         if os.isdir(os.path.join(database_path,class_name)) :
             shutil.rmtree(os.path.join(students_database_path,class_name))
@@ -179,6 +182,14 @@ def student_list():
         else :
             temp_password=password_generator()
             
+
+            ### send email to student with their password
+            try : 
+                send_email(email,temp_password)
+            except : 
+                flash("Failed to send email to the specified email id")
+                return redirect('/faculty_list')
+            
             #### Must be removed in the final version
             filetowrite=open("temp.txt","a")
             filetowrite.write(f"Email-id : {email}\nPassword : {temp_password}\nUsertype : Student\n\n")
@@ -189,9 +200,7 @@ def student_list():
             db.session.add(student)
             db.session.commit()
             flash('Student added successfully')
-            ### send email to student with their password
-            send_email(email,temp_password)
-
+            
     student_list=User.query.filter_by(usertype='student')
     cnt=0
     for stud in student_list :

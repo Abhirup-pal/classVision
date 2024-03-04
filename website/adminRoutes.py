@@ -33,21 +33,28 @@ def faculty_list():
         else :
             temp_password=password_generator()
 
+
+            ### send email to faculty with their password
+            try : 
+                send_email(email,temp_password)
+            except : 
+                flash("Failed to send email to the specified email id")
+                return redirect('/faculty_list')
+            
             #### Must be removed in the final version
             filetowrite=open('temp.txt','a')
             filetowrite.write(f"Email-id : {email}\nPassword : {temp_password}\nUsertype : Faculty\n\n")
+            filetowrite.close()
 
-
-
+            
             faculty = User(email=email,password=generate_password_hash(temp_password),first_name="",usertype="faculty")
             db.session.add(faculty)
             db.session.commit()
             flash('Faculty added successfully')
-            ### send email to faculty with their password
-            send_email(email,temp_password)
+            
     faculty_list=User.query.filter_by(usertype='faculty')
     cnt=0
-    for stud in faculty_list :
+    for facul in faculty_list :
         cnt=1
         break
     return render_template('faculty_list.html',faculty_list=faculty_list,user=current_user,isEmpty=(cnt==0))
@@ -77,4 +84,9 @@ def all_users() :
         flash('You are not allowed to access this page')
         return redirect('/')
     users=User.query.all()
-    return render_template('view_users.html',user=current_user,users=users)
+    isEmpty = 1
+    for user in users :
+        if user.usertype!='admin' :
+            isEmpty=0
+            break
+    return render_template('view_users.html',user=current_user,users=users,isEmpty=isEmpty)
