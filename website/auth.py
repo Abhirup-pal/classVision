@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from .models import User
-from werkzeug.security import check_password_hash
+from werkzeug.security import check_password_hash,generate_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 
 
@@ -58,3 +58,27 @@ def student_login():
 def logout():
     logout_user()
     return redirect('/')
+
+@auth.route('/forgot_password',methods=['GET', 'POST'])
+def forgot_password() :
+    if request.method=='POST' :
+        email=request.form['email']
+        user = User.query.filter_by(email=email).first()
+        if user :
+            from .password import password_generator
+            from .send_email import send_email
+            from . import db
+            temp_password = password_generator()
+            try :
+                send_email(email,temp_password)
+            except :
+                flash("Failed to send email to the specified email id")
+                return redirect('/forgot_password')
+            user.password = generate_password_hash(temp_password)
+            db.session.commit()
+            flash('You received an email containing your new password')
+            return redirect('/')
+        else :
+            flash("Email id is not registered")
+            return redirect('/forgot_password')
+    return render_template("forgot_password.html", user=current_user)

@@ -18,8 +18,13 @@ def send_email(email_receiver,password) :
     subject = 'Login to the ClassVision portal'
     body = f"""
     You can now login to the classVision portal using the following credentials :
+
+
     Email id : {email_receiver}
     Password : {password}
+
+
+    Note : This is a temporary password. You are advised to change it immediately after logging in by clicking the "Update password" link in the navbar/menu
     """
 
     em = EmailMessage()
@@ -27,8 +32,6 @@ def send_email(email_receiver,password) :
     em['To'] = email_receiver
     em['Subject'] = subject
     em.set_content(body)
-
-    print(email_sender,email_password)
 
     # Add SSL (layer of security)
     context = ssl.create_default_context()
