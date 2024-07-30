@@ -7,6 +7,9 @@ import zipfile
 import shutil
 from pathlib import Path
 from werkzeug.security import generate_password_hash,check_password_hash
+from ultralytics import YOLO
+import yaml
+import shutil
 
 views = Blueprint('views', __name__)
 
@@ -55,6 +58,8 @@ def update_profile() :
                 filename, ext = os.path.splitext(zip_file.filename)
                 roll_num=current_user.roll_number
 
+                
+
 
                 # Check that the file is a zip file
                 if ext != '.zip':
@@ -66,14 +71,17 @@ def update_profile() :
                     shutil.rmtree(folder_name,ignore_errors=True)
 
                 zip_file_path = os.path.join(students_database_path, f'{roll_num}.zip')
-
+                
                 zip_file.save(zip_file_path)
 
                 # extract and remove the zip file
                 with zipfile.ZipFile(zip_file_path, 'r') as zip_ref:
-                    zip_ref.extractall(students_database_path)
-                os.rename(os.path.join(students_database_path,filename),os.path.join(students_database_path,roll_num))
+                    zip_ref.extractall(os.path.join(students_database_path,roll_num,"images"))
+                
                 os.remove(zip_file_path)
+
+                
+                
             db.session.commit()
             flash("Profile updated successfully")
         except :

@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 
 
 def send_email(email_receiver,password) :
-
+    return
     load_dotenv()
     
     # Define email sender and receiver

@@ -10,6 +10,7 @@ from website.utils import get_attendance,clean_duplicate_attendance
 from .password import password_generator
 from werkzeug.security import generate_password_hash
 from .send_email import send_email
+from ultralytics import YOLO
 
 facultyRoutes = Blueprint('facultyRoutes', __name__)
 
@@ -109,6 +110,7 @@ def deleteClass(class_name) :
 @login_required
 def attendance():
     if request.method == 'POST':
+
         start_time = time.time()
         # get the name of the folder and the zip file
         class_name = request.form['class_name']
@@ -116,6 +118,24 @@ def attendance():
         attendance_date = request.form['attendance_date']  # Get the selected attendance date
         csv_path = Path(buffer_path) / Path(class_name+"attendance.csv")
 
+        ### NEW CODE ###
+        model =YOLO(os.path.join(current_dir,"database","models",class_name,"best.pt"))
+        result = model.predict('/content/testingimg.jpg', save=True, imgsz=320, conf=0.5, save_txt=True)
+        file_path = os.path.join(os.path.dirname(current_dir),"runs","detect","predict","labels")
+        all_files = os.listdir(file_path)
+
+        # Filter files with .txt extension
+        txt_files = [file for file in all_files if file.endswith('.txt')]
+        text_file = txt_files[0]
+
+        l = []
+        # Open the file in read mode
+        with open(os.path.join(file_path,text_file), "r") as file:
+            # Iterate over each line in the file
+            for line in file:
+                res_list = line.split(' ')
+                l.append(int(res_list[0]))
+        ### END NEW CODE ###
         
         file_name, ext = os.path.splitext(image.filename)
         print(ext)

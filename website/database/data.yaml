@@ -1,0 +1,6 @@
+names:
+- 21IM10044
+nc: 1
+path: C:\Users\ojasm\OneDrive\Desktop\Ojas\Sem 6\IS Lab\classVision\website\database\students\
+train: 21IM10044\images
+val: 21IM10044\images

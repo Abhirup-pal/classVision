@@ -1,0 +1,12 @@
+names:
+- face
+nc: 1
+roboflow:
+  license: CC BY 4.0
+  project: detect-ri4f7
+  url: https://universe.roboflow.com/models-21otp/detect-ri4f7/dataset/1
+  version: 1
+  workspace: models-21otp
+test: test/images
+train: train/images
+val: valid/images

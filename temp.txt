@@ -2,11 +2,15 @@ Email : classvisionAdmin@gmail.com
 Password : classVision@Admin
 Usertype : Admin
 
-Email-id : otojenekikorbi@gmail.com
-Password : X.?sO*6m<R2U
+Email-id : ojas.modak23@gmail.com
+Password : 9NT|Wrz$fe@)
 Usertype : Faculty
 
-Email-id : abhiruppal28@kgpian.iitkgp.ac.in
-Password : Qj2V3%>rB:o>
+Email-id : abc@gmail.com
+Password : PY32QxCJ=xSQ
+Usertype : Student
+
+Email-id : BCD@gmail.com
+Password : *3Kq()G?JOV?
 Usertype : Student
 
